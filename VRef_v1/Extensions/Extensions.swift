@@ -51,7 +51,7 @@ extension VRef_API {
         }.resume()
     }
     
-    func get<Response: Decodable>(token: AccessToken, urlString: String, completion: @escaping (Result<Response, Error>) -> Void){
+    func get<Response: Decodable>(token: AccessToken, urlString: String, completion: @escaping (Result<Response, Error>, Int?) -> Void){
         guard let url = URL(string: urlString) else { fatalError("Missing URL") }
         var request = URLRequest(url: url)
         
@@ -67,17 +67,19 @@ extension VRef_API {
                 return
             }
             
+            let statusCode = (response as! HTTPURLResponse).statusCode
+            
             do {
                 let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-                completion(.success(decodedResponse))
+                completion(.success(decodedResponse), statusCode)
             } catch {
-                completion(.failure(error))
+                completion(.failure(error), statusCode)
             }
             
         }.resume()
     }
     
-    func delete<Response: Decodable>(token: AccessToken, urlString: String, completion: @escaping(Result<Response, Error>) -> Void){
+    func delete<Response: Decodable>(token: AccessToken, urlString: String, completion: @escaping(Result<Response, Error>, Int?) -> Void){
         guard let url = URL(string: urlString) else { fatalError("Missing URL") }
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
@@ -92,24 +94,24 @@ extension VRef_API {
                 return
             }
             
-            let responseCode = (response as! HTTPURLResponse).statusCode
-            print("----------RESPONSE CODE DELETE> \(responseCode)")
+            let statusCode = (response as! HTTPURLResponse).statusCode
+            print("----------STATUS CODE DELETE> \(statusCode)")
             
             if Response.self == EmptyResponse.self,
                let response = EmptyResponse() as? Response {
-                completion(.success(response))
+                completion(.success(response), statusCode)
             } else {
                 do {
                     let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-                    completion(.success(decodedResponse))
+                    completion(.success(decodedResponse), statusCode)
                 } catch {
-                    completion(.failure(error))
+                    completion(.failure(error), statusCode)
                 }
             }
         }.resume()
     }
     
-    func put<Response: Decodable, Body: Encodable>(token: AccessToken?, urlString: String, body: Body, completion: @escaping(Result<Response, Error>) -> Void){
+    func put<Response: Decodable, Body: Encodable>(token: AccessToken?, urlString: String, body: Body, completion: @escaping(Result<Response, Error>, Int?) -> Void){
         guard let url = URL(string: urlString) else { fatalError("Missing URL") }
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
@@ -129,18 +131,18 @@ extension VRef_API {
                 return
             }
             
-            let responseCode = (response as! HTTPURLResponse).statusCode
-            print("----------RESPONSE CODE PUT> \(responseCode)")
+            let statusCode = (response as! HTTPURLResponse).statusCode
+            print("----------RESPONSE CODE PUT> \(statusCode)")
             
             if Response.self == EmptyResponse.self,
                let response = EmptyResponse() as? Response {
-                completion(.success(response))
+                completion(.success(response), statusCode)
             } else {
                 do {
                     let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-                    completion(.success(decodedResponse))
+                    completion(.success(decodedResponse), statusCode)
                 } catch {
-                    completion(.failure(error))
+                    completion(.failure(error), statusCode)
                 }
             }
         }.resume()

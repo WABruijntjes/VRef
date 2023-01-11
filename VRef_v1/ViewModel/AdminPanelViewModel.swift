@@ -96,7 +96,6 @@ class AdminPanelViewModel: ObservableObject{
             self.adminErrorDescription = error.localizedDescription
             self.adminAlert = true
         }
-        loadingUsers = false
     }
     
     func getAllOrganizations(){
@@ -239,7 +238,7 @@ class AdminPanelViewModel: ObservableObject{
             let newUser = User(id: -1, email: newUserEmail, firstName: newUserFirstName, lastName: newUserLastName, organization: currentOrganization, userType: .Student)
 
             
-            VRef_API.API.createUser(token: token, userDetails: newUser, completion: { [unowned self](result: Result<User, ErrorHandler.APIPostCallError>) in
+            VRef_API.API.createUser(token: token, userDetails: newUser, completion: { [unowned self](result: Result<User, ErrorHandler.APICallError>) in
 
                 switch result{
                 case .success(var userResult):

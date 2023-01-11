@@ -110,6 +110,9 @@ struct AdminPanel: View {
                             ZStack(alignment: .center){
                                 Spacer()
                                 ProgressView("Loading users from \(adminPanelVM.currentOrganization?.name ?? "this organization")").progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                                    .refreshable{
+                                        adminPanelVM.getAllUsers()
+                                    }
                             }.frame(maxWidth: .infinity)
                             Spacer().frame(maxHeight: .infinity)
                         }else{

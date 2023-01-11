@@ -37,9 +37,9 @@ class LoginViewModel: ObservableObject{
         
         loading = true
         
-        VRef_API.API.login(credentials: credentials){ [unowned self](result: Result<(User,AccessToken), ErrorHandler.AuthenticationError>) in
+        VRef_API.API.login(credentials: credentials, completion: { result in
             
-            loading = false
+            self.loading = false
             
             switch result{
             case .success(let result):
@@ -59,7 +59,7 @@ class LoginViewModel: ObservableObject{
                 self.loginErrorDescription = authError.errorDescription
                 self.loginAlert = true
             }
-        }
+        })
     }
     
     func logout() {

@@ -29,6 +29,7 @@ class TrainingSessionViewModel: ObservableObject{
         
     @Published var newEventName = ""
     @Published var newEventMessage = ""
+    @Published var newQuickEventMessage = ""
     @Published var newEventSymbol = ""
     
     var startTrainingDisabled: Bool {
@@ -89,7 +90,7 @@ class TrainingSessionViewModel: ObservableObject{
             let token = try UserDefaults.standard.getObject(forKey: "loggedInAccessToken", castTo: AccessToken.self)
             let instructor = try UserDefaults.standard.getObject(forKey: "loggedInUser", castTo: User.self)
             
-            VRef_API.API.createTraining(token: token, studentIDs: selectedStudentIDs, instructorID: instructor.id, completion: { [unowned self](result: Result<Training, ErrorHandler.APIPostCallError>) in
+            VRef_API.API.createTraining(token: token, studentIDs: selectedStudentIDs, instructorID: instructor.id, completion: { [unowned self](result: Result<Training, ErrorHandler.APICallError>) in
 
                 switch result{
                 case .success(let trainingResult):
@@ -145,25 +146,25 @@ class TrainingSessionViewModel: ObservableObject{
         self.newEventName = "Quick Feedback"
         self.newEventSymbol = "fb_quick"
         
-        createEvent()
+        createEvent(message: self.newQuickEventMessage)
         
         self.newEventName = ""
         self.newEventSymbol = ""
-        self.newEventMessage = ""
+        self.newQuickEventMessage = ""
     }
     
     func createFeedbackEvent(){
         
         self.newEventSymbol = "fb_manual"
         
-        createEvent()
+        createEvent(message: self.newEventMessage)
         
         self.newEventName = ""
         self.newEventSymbol = ""
         self.newEventMessage = ""
     }
     
-    private func createEvent(){
+    private func createEvent(message: String){
         
         self.loadingEvents = true
         
@@ -174,7 +175,7 @@ class TrainingSessionViewModel: ObservableObject{
         let minutes = calendar.component(.minute, from: date)
         let seconds = calendar.component(.second, from: date)
         
-        let newEvent = Event(id: -1, name: self.newEventName, symbol: self.newEventSymbol, timeStamp: TimeStamp(hours: hour, minutes: minutes, seconds: seconds, miliseconds: 0), message: self.newEventMessage)
+        let newEvent = Event(id: -1, name: self.newEventName, symbol: self.newEventSymbol, timeStamp: TimeStamp(hours: hour, minutes: minutes, seconds: seconds, miliseconds: 0), message: message)
         
         do {
             let token = try UserDefaults.standard.getObject(forKey: "loggedInAccessToken", castTo: AccessToken.self)

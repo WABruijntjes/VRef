@@ -27,12 +27,12 @@ struct Training_EventList: View {
             
             HStack{
                 ZStack(alignment: .leading){
-                    if(trainingSessionVM.newEventMessage.isEmpty){
+                    if(trainingSessionVM.newQuickEventMessage.isEmpty){
                         Text("Write some quick feedack...")
                             .foregroundColor(.gray)
                             .padding(.horizontal)
                     }
-                    TextField("", text: $trainingSessionVM.newEventMessage)
+                    TextField("", text: $trainingSessionVM.newQuickEventMessage)
                         .keyboardType(.default)
                         .disableAutocorrection(true)
                         .foregroundColor(.black)

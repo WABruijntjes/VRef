@@ -10,12 +10,11 @@ import Foundation
 struct ErrorHandler{
     
     public enum AuthenticationError: Error, LocalizedError, Identifiable{
-        case requestedObjectNotFound
-        case invalidBodyParameters
+        case unknownError
+        case invalidBodyParameters //400
+        case requestedObjectNotFound //404
         
         case authenticationError
-
-        
         
         var id: String{
             self.localizedDescription
@@ -23,6 +22,8 @@ struct ErrorHandler{
         
         public var errorDescription: String{
             switch self{
+            case .unknownError:
+                return NSLocalizedString("Unknown error occurred", comment: "")
             case .requestedObjectNotFound:
                 return NSLocalizedString("Requested object not found", comment: "")
             case .invalidBodyParameters:
@@ -32,57 +33,28 @@ struct ErrorHandler{
                 return NSLocalizedString("Something went wrong while authenticating", comment: "")
             }
         }
-    }
-    
-    enum APIGetCallError: Error, LocalizedError, Identifiable{
-        case errorGetAllTrainings
-        case errorGetAllUsers
-        case errorGetTrainingByID
-        case errorGetEventsOfTraining
-        case errorGetUserByID
-        case errorGetAllOrganizations
         
-        
-        var id: String{
-            self.localizedDescription
-        }
-        
-        var errorDescription: String{
-            switch self{
-            case .errorGetAllTrainings:
-                return NSLocalizedString("Something went wrong getting all training sessions", comment: "")
-            case .errorGetAllUsers:
-                return NSLocalizedString("Something went wrong getting all users", comment: "")
-            case .errorGetTrainingByID:
-                return NSLocalizedString("Something went wrong getting a training by ID", comment: "")
-            case .errorGetEventsOfTraining:
-                return NSLocalizedString("Something went wrong getting the events of this training", comment: "")
-            case .errorGetUserByID:
-                return NSLocalizedString("Something went wrong getting the user by ID", comment: "")
-            case .errorGetAllOrganizations:
-                return NSLocalizedString("Something went wrong getting all organizations. Pull the list down to try and refresh", comment: "")
+        static func handleError(statusCode: Int) -> AuthenticationError{
+            switch statusCode {
+            case 400:
+                return .invalidBodyParameters
+            case 404:
+                return .requestedObjectNotFound
+            default:
+                return .unknownError
             }
-            
-            
         }
     }
     
-    enum APIPostCallError: Error, LocalizedError, Identifiable{
+    enum APICallError: Error, LocalizedError, Identifiable{
         //Statuscode errors declaration
-        case invalidBodyParameters
-        case notAuthorized
-        case notAuthenticated
-        case requestedObjectNotFound
-        case trainingStateError
-        case organizationAlreadyExistsError
-        
-        //Custom errors declaration
-        case errorCreateNewTraining
-        case errorStartTraining
-        case errorCreateEvent
-        case errorCreateOrganization
-        case errorStopTraining
-        case errorCreateUser
+        case unknownError
+        case invalidBodyParameters //400
+        case notAuthorized //401
+        case notAuthenticated //403
+        case requestedObjectNotFound //404
+        case trainingStateError //405
+        case organizationAlreadyExistsError //409
         
         
         var id: String{
@@ -91,9 +63,11 @@ struct ErrorHandler{
         
         var errorDescription: String{
             switch self{
+            case .unknownError:
+                return NSLocalizedString("Unknown error ocurred", comment: "")
                 //400
             case .invalidBodyParameters:
-                return NSLocalizedString("Invalid body parameters", comment: "")
+                return NSLocalizedString("The parameters you have entered are invalid", comment: "")
                 //401
             case .notAuthorized:
                 return NSLocalizedString("Not authorized to make this call", comment: "")
@@ -102,75 +76,28 @@ struct ErrorHandler{
                 return NSLocalizedString("Not authenticated to make this call", comment: "")
                 //404
             case .requestedObjectNotFound:
-                return NSLocalizedString("Requested object not found", comment: "")
+                return NSLocalizedString("he requested object could not be found", comment: "")
                 //405
             case .trainingStateError:
-                return NSLocalizedString("Can't use this method in the current state of the Training object", comment: "")
+                return NSLocalizedString("Can't use this method in the current state of the Training", comment: "")
                 //409
             case .organizationAlreadyExistsError:
                 return NSLocalizedString("An organization with this name already exists", comment: "")
-                
-                //Custom errors
-            case .errorCreateNewTraining:
-                return NSLocalizedString("Something went wrong creating a new training session", comment: "")
-            case .errorStartTraining:
-                return NSLocalizedString("Something went wrong starting the training session", comment: "")
-            case .errorCreateEvent:
-                return NSLocalizedString("Something went wrong creating an event for the training session", comment: "")
-            case .errorCreateOrganization:
-                return NSLocalizedString("Something went wrong creating an organization", comment: "")
-            case .errorStopTraining:
-                return NSLocalizedString("Something went wrong stopping the training session", comment: "")
-            case .errorCreateUser:
-                return NSLocalizedString("Something went wrong creating a new user", comment: "")
+            }
+        }
+        
+        static func handleError(statusCode: Int) -> APICallError{
+            switch statusCode {
+            case 400:
+                return .invalidBodyParameters
+            case 404:
+                return .requestedObjectNotFound
+            default:
+                return .unknownError
             }
         }
     }
     
-    enum APIPutCallError: Error, LocalizedError, Identifiable{
-        case errorUpdateEvent
-        case errorUpdateUser
-        case errorUpdateOrganization
-        case errorActivateUser
-        
-        var id: String{
-            self.localizedDescription
-        }
-        
-        var errorDescription: String{
-            switch self{
-            case .errorUpdateEvent:
-                return NSLocalizedString("Something went wrong updating the event. The details have not been changed", comment: "")
-            case .errorUpdateUser:
-                return NSLocalizedString("Something went wrong updating the user. The details have not been changed", comment: "")
-            case .errorUpdateOrganization:
-                return NSLocalizedString("Something went wrong updating the organization. The details have not been changed", comment: "")
-            case .errorActivateUser:
-                return NSLocalizedString("Something went wrong activating your account. Try again", comment: "")
-            }
-        }
-    }
-    
-    enum APIDeleteCallError: Error, LocalizedError, Identifiable{
-        case errorDeleteEvent
-        case errorDeleteUser
-        case errorDeleteOrganization
-        
-        var id: String{
-            self.localizedDescription
-        }
-        
-        var errorDescription: String{
-            switch self{
-            case .errorDeleteEvent:
-                return NSLocalizedString("Something went wrong deleting the event", comment: "")
-            case .errorDeleteUser:
-                return NSLocalizedString("Something went wrong deleting the user", comment: "")
-            case .errorDeleteOrganization:
-                return NSLocalizedString("Something went wrong deleting the organization", comment: "")
-            }
-        }
-    }
     
     enum ObjectSavableError: String, LocalizedError {
         case unableToEncode = "Unable to encode object into data"

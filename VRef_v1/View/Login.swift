@@ -39,12 +39,12 @@ struct Login: View {
                             .stroke(Color(.sRGB, red: 153/255, green: 15/255, blue: 238/255), lineWidth: 3)
                     ).padding(.all, 5)
                     .onAppear() {
-                        self.loginVM.credentials.email = "superadmin"
+                        self.loginVM.credentials.email = "superadmin@gmail.com"
                     }
                 
                 /*
                  Presentation accounts:
-                    SUPERADMIN:(superadmin | string)
+                    SUPERADMIN:(superadmin@gmail.com | string)
                     ADMIN:(noyeyes248@unicsite.com | string)
                     INSTRUCTOR: (foron58546@tohup.com | string),
                     STUDENT: (vihelo8229@tohup.com | string),
