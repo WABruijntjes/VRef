@@ -138,6 +138,7 @@ class AdminPanelViewModel: ObservableObject{
                 switch result {
                 case .success:
                     
+                    self.newOrganizationName = ""
                     self.getAllOrganizations()
                     
                 case .failure(let error):
@@ -171,6 +172,7 @@ class AdminPanelViewModel: ObservableObject{
                 switch result {
                 case .success:
                     
+                    self.organizationNameToChange = ""
                     if(loggedInUser.userType == .SuperAdmin){
                         self.getAllOrganizations()
                     }
@@ -271,12 +273,11 @@ class AdminPanelViewModel: ObservableObject{
             let token = try UserDefaults.standard.getObject(forKey: "loggedInAccessToken", castTo: AccessToken.self)
             
             VRef_API.API.updateUser(token: token, userID: userToChange.id, userDetails: userToChange, completion: { result in
-                
+                self.loadingUsers = false
                 
                 switch result {
                 case .success:
                     
-                    self.loadingUsers = false
                     self.getAllUsers()
                     
                 case .failure(let error):
