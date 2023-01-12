@@ -12,7 +12,6 @@ struct TrainingList: View {
     @EnvironmentObject var trainingOverviewVM: TrainingOverviewViewModel
     
     var body: some View {
-        //------ Start training list ------//
         VStack(alignment: .leading) {
             Text("Your training sessions")
                 .font(.system(size: 35, weight: .semibold, design: .default))
@@ -52,6 +51,5 @@ struct TrainingList: View {
         }
         .frame(width: 650)
         .zIndex(.infinity)
-        //------ End training list ------/
     }
 }

@@ -13,10 +13,6 @@ struct OrganizationList: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0){
-//            HStack{
-//                Back_Button()
-//                Spacer()
-//            }.padding()
             Text("Organizations")
                 .padding()
                 .font(.title)

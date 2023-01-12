@@ -39,7 +39,7 @@ struct Login: View {
                             .stroke(Color(.sRGB, red: 153/255, green: 15/255, blue: 238/255), lineWidth: 3)
                     ).padding(.all, 5)
                     .onAppear() {
-                        self.loginVM.credentials.email = "superadmin@gmail.com"
+                        self.loginVM.credentials.email = "" //TODO: REMOVE THIS
                     }
                 
                 /*
