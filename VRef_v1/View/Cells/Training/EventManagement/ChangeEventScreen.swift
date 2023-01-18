@@ -53,8 +53,10 @@ struct ChangeEventScreen: View {
                             .padding(.bottom)
                             .foregroundColor(Color(.sRGB, red: 132/255, green: 132/255, blue: 132/255))
                         TextField("Type a name for your feedback event here...", text: $event.name)
-                            .onReceive(event.message.publisher.collect()) { //Limit to 1000 characters
-                                event.message = String($0.prefix(textCharacterLimit))
+                            .onChange(of: event.name) { newValue in
+                                if newValue.count > self.textCharacterLimit {
+                                    event.name = String(newValue.prefix(self.textCharacterLimit))
+                                }
                             }
                             .padding(.horizontal)
                             .autocapitalization(.sentences)
@@ -74,8 +76,10 @@ struct ChangeEventScreen: View {
                         .foregroundColor(Color(.sRGB, red: 132/255, green: 132/255, blue: 132/255))
                     Spacer()
                     TextField("", text: $event.message, axis: .vertical)
-                        .onReceive(event.message.publisher.collect()) { //Limit to 1000 characters
-                            event.message = String($0.prefix(textCharacterLimit))
+                        .onChange(of: event.message) { newValue in
+                            if newValue.count > self.textCharacterLimit {
+                                event.message = String(newValue.prefix(self.textCharacterLimit))
+                            }
                         }
                         .frame(maxHeight: .infinity, alignment: .top)
                         .lineLimit(11...11)
@@ -89,7 +93,7 @@ struct ChangeEventScreen: View {
                         )
                     HStack{
                         Spacer()
-                        Text("Characters left: \(1000 - event.message.count)")
+                        Text("Characters left: \(textCharacterLimit - event.message.count)")
                     }
                     .padding(.horizontal)
                 }.padding(.horizontal)

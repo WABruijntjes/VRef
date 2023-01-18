@@ -9,7 +9,6 @@ import Foundation
 
 class AdminPanelViewModel: ObservableObject{
     
-    // Declare Variables
     @Published var adminErrorDescription: String = ""
     @Published var adminAlert = false
     

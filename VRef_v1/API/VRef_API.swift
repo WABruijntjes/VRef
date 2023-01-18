@@ -17,65 +17,14 @@ class VRef_API: ObservableObject{
     // MARK: POST
     /* ------------------------ POST ----------------------------*/
     
-    func login(credentials: Credentials, completion: @escaping (Result<(User, AccessToken), ErrorHandler.ErrorType>) -> Void) {
+    func login(credentials: Credentials, completion: @escaping (Result<LoginResponse, ErrorHandler.ErrorType>) -> Void) {
         
         post(token: nil, urlString: "\(api_url)/user/login", body: credentials, completion: { (result: Result<LoginResponse, Error>, statusCode) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
                     
-                    // Extract user properties
-                    guard let userID = response.user?.id else {
-                        print("No userID")
-                        return
-                    }
-                    
-                    guard let userEmail = response.user?.email else {
-                        print("No email")
-                        return
-                    }
-                    
-                    guard let userFirstName = response.user?.firstName else {
-                        print("No firstname")
-                        return
-                    }
-                    
-                    guard let userLastName = response.user?.lastName else {
-                        print("No lastname")
-                        return
-                    }
-                    
-                    guard let userOrganization = response.user?.organization else{
-                        print("No organization")
-                        return
-                    }
-                    
-                    guard let userType = response.user?.userType else{
-                        print("No userType")
-                        return
-                    }
-                    
-                    //Extract accesstoken properties
-                    guard let token = response.accessToken else {
-                        print("No accestoken")
-                        return
-                    }
-                    
-                    guard let tokenExpire = response.expiresIn else {
-                        print("No accestoken expiry")
-                        return
-                    }
-                    
-                    guard let tokenType = response.tokenType else {
-                        print("No accestoken type")
-                        return
-                    }
-                    
-                    let accessToken = AccessToken(token: token, tokenType: tokenType, expiresIn: tokenExpire)
-                    let user = User(id: userID, email: userEmail, firstName: userFirstName, lastName: userLastName, organization: userOrganization, userType: userType)
-                    
-                    let loginResult = (user: user, accessToken: accessToken)
-                    completion(.success(loginResult))
+                    completion(.success(response))
                     
                 case .failure(let error):
                     print ("-----Login_ERROR>: \(error)")

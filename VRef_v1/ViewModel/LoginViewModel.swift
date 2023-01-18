@@ -12,7 +12,6 @@ class LoginViewModel: ObservableObject{
     @Published var loginErrorDescription: String = ""
     @Published var loginAlert = false
     
-    //@Published var loggedInUser: User?
     @Published var isAuthenticated: Bool = false
     
     @Published var credentials = Credentials(email: "", password: "")
@@ -43,9 +42,10 @@ class LoginViewModel: ObservableObject{
             
             switch result{
             case .success(let result):
+                
                 do {
-                    try UserDefaults.standard.setObject(result.0, forKey: "loggedInUser")
-                    try UserDefaults.standard.setObject(result.1, forKey: "loggedInAccessToken")
+                    try UserDefaults.standard.setObject(result.user, forKey: "loggedInUser")
+                    try UserDefaults.standard.setObject(AccessToken(token: result.accessToken, tokenType: result.tokenType, expiresIn: result.expiresIn), forKey: "loggedInAccessToken")
                 } catch {
                     print(error.localizedDescription)
                 }

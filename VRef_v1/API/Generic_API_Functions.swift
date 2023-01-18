@@ -26,22 +26,25 @@ extension VRef_API {
             
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data")
+                completion(.failure(error ?? NSError()), nil)
                 return
             }
             
             let statusCode = (response as! HTTPURLResponse).statusCode
-            print("----------STATUS CODE POST> \(statusCode)")
-            
-            if Response.self == EmptyResponse.self,
-               let response = EmptyResponse() as? Response{
-                completion(.success(response), statusCode)
-            } else {
-                do {
-                    let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-                    completion(.success(decodedResponse), statusCode)
-                } catch {
-                    completion(.failure(error), statusCode)
+            if statusCode >= 200 && statusCode < 300 {
+                if Response.self == EmptyResponse.self,
+                   let response = EmptyResponse() as? Response{
+                    completion(.success(response), statusCode)
+                } else {
+                    do {
+                        let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
+                        completion(.success(decodedResponse), statusCode)
+                    } catch {
+                        completion(.failure(error), statusCode)
+                    }
                 }
+            }else {
+                completion(.failure(NSError(domain: "", code: statusCode, userInfo: nil)), statusCode)
             }
         }.resume()
     }
@@ -59,16 +62,20 @@ extension VRef_API {
             
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data")
+                completion(.failure(error ?? NSError()), nil)
                 return
             }
             
             let statusCode = (response as! HTTPURLResponse).statusCode
-            
-            do {
-                let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-                completion(.success(decodedResponse), statusCode)
-            } catch {
-                completion(.failure(error), statusCode)
+            if statusCode >= 200 && statusCode < 300 {
+                do {
+                    let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
+                    completion(.success(decodedResponse), statusCode)
+                } catch {
+                    completion(.failure(error), statusCode)
+                }
+            }else {
+                completion(.failure(NSError(domain: "", code: statusCode, userInfo: nil)), statusCode)
             }
             
         }.resume()
@@ -80,28 +87,31 @@ extension VRef_API {
         request.httpMethod = "DELETE"
         
         request.setValue("\(token.tokenType) \(token.token)", forHTTPHeaderField: "Authorization")
-
+        
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data")
+                completion(.failure(error ?? NSError()), nil)
                 return
             }
             
             let statusCode = (response as! HTTPURLResponse).statusCode
-            print("----------STATUS CODE DELETE> \(statusCode)")
-            
-            if Response.self == EmptyResponse.self,
-               let response = EmptyResponse() as? Response {
-                completion(.success(response), statusCode)
-            } else {
-                do {
-                    let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-                    completion(.success(decodedResponse), statusCode)
-                } catch {
-                    completion(.failure(error), statusCode)
+            if statusCode >= 200 && statusCode < 300 {
+                if Response.self == EmptyResponse.self,
+                   let response = EmptyResponse() as? Response {
+                    completion(.success(response), statusCode)
+                } else {
+                    do {
+                        let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
+                        completion(.success(decodedResponse), statusCode)
+                    } catch {
+                        completion(.failure(error), statusCode)
+                    }
                 }
+            }else {
+                completion(.failure(NSError(domain: "", code: statusCode, userInfo: nil)), statusCode)
             }
         }.resume()
     }
@@ -115,30 +125,33 @@ extension VRef_API {
             request.setValue("\(token!.tokenType) \(token!.token)", forHTTPHeaderField: "Authorization")
         }
         
-        guard let deleteData = try? JSONEncoder().encode(body) else{ return }
+        guard let putData = try? JSONEncoder().encode(body) else{ return }
         
-        request.httpBody = deleteData
+        request.httpBody = putData
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data")
+                completion(.failure(error ?? NSError()), nil)
                 return
             }
             
             let statusCode = (response as! HTTPURLResponse).statusCode
-            print("----------RESPONSE CODE PUT> \(statusCode)")
-            
-            if Response.self == EmptyResponse.self,
-               let response = EmptyResponse() as? Response {
-                completion(.success(response), statusCode)
-            } else {
-                do {
-                    let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-                    completion(.success(decodedResponse), statusCode)
-                } catch {
-                    completion(.failure(error), statusCode)
+            if statusCode >= 200 && statusCode < 300 {
+                if Response.self == EmptyResponse.self,
+                   let response = EmptyResponse() as? Response {
+                    completion(.success(response), statusCode)
+                } else {
+                    do {
+                        let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
+                        completion(.success(decodedResponse), statusCode)
+                    } catch {
+                        completion(.failure(error), statusCode)
+                    }
                 }
+            }else {
+                completion(.failure(NSError(domain: "", code: statusCode, userInfo: nil)), statusCode)
             }
         }.resume()
     }
