@@ -8,7 +8,7 @@
 import Foundation
 
 struct Event: Codable, Identifiable {
-    let id: Int //TODO: Check if needs to be optional
+    let id: Int
     var name: String
     var symbol: String
     var timeStamp: TimeStamp

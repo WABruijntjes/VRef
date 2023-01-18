@@ -15,7 +15,6 @@ struct MainScreen: View {
     @StateObject var adminPanelVM = AdminPanelViewModel()
     
     var body: some View {
-        //TODO: Check for session expired
         VStack(spacing: 0){
             TopBar()
                 .environmentObject(userSettings)

@@ -55,7 +55,7 @@ struct TrainingScreen: View, KeyboardReadable {
                             ZStack{
                                 VideoPlayer(player: player1, fullScreen: $fullScreen1)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    
+                                
                                 VStack{
                                     HStack{
                                         Spacer()
@@ -151,7 +151,9 @@ struct TrainingScreen: View, KeyboardReadable {
             AddEventScreen()
         }
         .sheet(isPresented: $trainingSessionVM.showingChangeEventForm){
-            ChangeEventScreen(event: eventToChange!) //TODO: Remove ! and change for non optional
+            if let event = eventToChange {
+                ChangeEventScreen(event: event)
+            }
         }
         .sheet(isPresented: $trainingSessionVM.showingSwitchCameraForm) {
             switch streamPlayerToSwitch {
@@ -183,5 +185,5 @@ struct TrainingScreen: View, KeyboardReadable {
         return Binding(get: { return streamPlayerToSwitch },set: { switchValue in
             streamPlayerToSwitch = switchValue
         }
-    ) }
+        ) }
 }

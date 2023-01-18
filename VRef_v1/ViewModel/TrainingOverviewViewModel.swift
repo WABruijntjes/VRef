@@ -15,7 +15,7 @@ class TrainingOverviewViewModel: ObservableObject{
     
     //Variables for view changes
     @Published var showingEvents = false
-    @Published var openEventsTrainingID:Int = -1
+    @Published var openEventsTrainingID: Int = -1
     @Published var loadingTrainings = false
     @Published var loadingEvents = false
     

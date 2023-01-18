@@ -39,7 +39,7 @@ struct Login: View {
                             .stroke(Color(.sRGB, red: 153/255, green: 15/255, blue: 238/255), lineWidth: 3)
                     ).padding(.all, 5)
                     .onAppear() {
-                        self.loginVM.credentials.email = "" //TODO: REMOVE THIS
+                        self.loginVM.credentials.email = "foron58546@tohup.com" //TODO: REMOVE THIS
                     }
                 
                 /*
@@ -106,7 +106,7 @@ struct Login: View {
             }
             
             ZStack {
-                Image("VRef - Logo (Reflection)")
+                Image("VRef_Logo_shadow_v2")
                     .renderingMode(.original)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -115,7 +115,7 @@ struct Login: View {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                         .scaleEffect(2)
-                        .offset(y: 50)
+                        .offset(y: 75)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

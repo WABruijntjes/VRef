@@ -17,7 +17,7 @@ class VRef_API: ObservableObject{
     // MARK: POST
     /* ------------------------ POST ----------------------------*/
     
-    func login(credentials: Credentials, completion: @escaping (Result<(User, AccessToken), ErrorHandler.AuthenticationError>) -> Void) {
+    func login(credentials: Credentials, completion: @escaping (Result<(User, AccessToken), ErrorHandler.ErrorType>) -> Void) {
         
         post(token: nil, urlString: "\(api_url)/user/login", body: credentials, completion: { (result: Result<LoginResponse, Error>, statusCode) in
             DispatchQueue.main.async {
@@ -80,7 +80,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----Login_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.AuthenticationError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -89,7 +89,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func createTraining(token: AccessToken, studentIDs: [Int], instructorID: Int,  completion: @escaping (Result<Training, ErrorHandler.APICallError>) -> Void){
+    func createTraining(token: AccessToken, studentIDs: [Int], instructorID: Int,  completion: @escaping (Result<Training, ErrorHandler.ErrorType>) -> Void){
         
         post(token: token,urlString: "\(api_url)/training", body: CreateTrainingRequestBody(students: studentIDs, instructorID: instructorID), completion: { (result: Result<Training, Error>, statusCode) in
             
@@ -102,7 +102,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----CreateTraining_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -113,7 +113,7 @@ class VRef_API: ObservableObject{
         
     }
     
-    func startTraining(token: AccessToken, trainingID:Int, completion: @escaping (Result<EmptyResponse, ErrorHandler.APICallError>) -> Void){
+    func startTraining(token: AccessToken, trainingID:Int, completion: @escaping (Result<EmptyResponse, ErrorHandler.ErrorType>) -> Void){
         
         post(token: token,urlString: "\(api_url)/training/\(trainingID)/start", body: StartTrainingRequestBody(cameras: []), completion: { (result: Result<EmptyResponse, Error>, statusCode) in
             
@@ -126,7 +126,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----startTrainingSession_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -137,7 +137,7 @@ class VRef_API: ObservableObject{
         
     }
     
-    func stopTraining(token: AccessToken, trainingID: Int, completion: @escaping (Result<EmptyResponse, ErrorHandler.APICallError>) -> Void){
+    func stopTraining(token: AccessToken, trainingID: Int, completion: @escaping (Result<EmptyResponse, ErrorHandler.ErrorType>) -> Void){
         
         post(token: token,urlString: "\(api_url)/training/\(trainingID)/stop", body: StopTrainingRequestBody(endTrainingSession: true), completion: { (result: Result<EmptyResponse, Error>, statusCode) in
             
@@ -150,7 +150,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----stopTrainingSession_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -160,7 +160,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func createEvent(token: AccessToken, trainingID: Int, eventDetails: Event, completion: @escaping (Result<Event, ErrorHandler.APICallError>) -> Void){
+    func createEvent(token: AccessToken, trainingID: Int, eventDetails: Event, completion: @escaping (Result<Event, ErrorHandler.ErrorType>) -> Void){
         
         post(token: token,urlString: "\(api_url)/training/\(trainingID)/event", body: eventDetails, completion: { (result: Result<Event, Error>, statusCode) in
             
@@ -173,7 +173,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----createEvent_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -183,7 +183,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func createUser(token: AccessToken, userDetails: User, completion: @escaping (Result<User, ErrorHandler.APICallError>) -> Void){
+    func createUser(token: AccessToken, userDetails: User, completion: @escaping (Result<User, ErrorHandler.ErrorType>) -> Void){
         post(token: token,urlString: "\(api_url)/user", body: userDetails, completion: { (result: Result<User, Error>, statusCode) in
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -195,7 +195,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----createUser_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -205,7 +205,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func createOrganization(token: AccessToken, organizationDetails: OrganizationNameRequestBody, completion: @escaping (Result<EmptyResponse, ErrorHandler.APICallError>) -> Void){
+    func createOrganization(token: AccessToken, organizationDetails: OrganizationNameRequestBody, completion: @escaping (Result<EmptyResponse, ErrorHandler.ErrorType>) -> Void){
         post(token: token,urlString: "\(api_url)/organization", body: organizationDetails, completion: { (result: Result<EmptyResponse, Error>, statusCode) in
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -217,7 +217,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----createOrganization_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -230,7 +230,7 @@ class VRef_API: ObservableObject{
     // MARK: GET
     /* ------------------------ GET ----------------------------*/
     
-    func getAllTrainingSessions(token: AccessToken,completion: @escaping (Result<[Training], ErrorHandler.APICallError>) -> Void) {
+    func getAllTrainingSessions(token: AccessToken,completion: @escaping (Result<[Training], ErrorHandler.ErrorType>) -> Void) {
         
         get(token: token, urlString: "\(api_url)/training", completion: { (result: Result<[Training], Error>, statusCode) in
             
@@ -243,7 +243,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----getAllTrainingSessions_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -253,7 +253,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func getTrainingByID(trainingID: Int, token: AccessToken,completion: @escaping (Result<Training, ErrorHandler.APICallError>) -> Void) {
+    func getTrainingByID(trainingID: Int, token: AccessToken,completion: @escaping (Result<Training, ErrorHandler.ErrorType>) -> Void) {
         
         get(token: token, urlString: "\(api_url)/training/\(trainingID)", completion: { (result: Result<Training, Error>, statusCode) in
             
@@ -266,7 +266,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----getTrainingByID_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -276,7 +276,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func getAllEventsOfTraining(trainingID: Int, token: AccessToken,completion: @escaping (Result<[Event], ErrorHandler.APICallError>) -> Void) {
+    func getAllEventsOfTraining(trainingID: Int, token: AccessToken,completion: @escaping (Result<[Event], ErrorHandler.ErrorType>) -> Void) {
         
         get(token: token, urlString: "\(api_url)/training/\(trainingID)/event", completion: { (result: Result<[Event], Error>, statusCode) in
             
@@ -289,7 +289,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----getAllTrainingEvents_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -299,7 +299,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func getUserByID(userID:Int, token: AccessToken,completion: @escaping (Result<User, ErrorHandler.APICallError>) -> Void){
+    func getUserByID(userID:Int, token: AccessToken,completion: @escaping (Result<User, ErrorHandler.ErrorType>) -> Void){
         
         get(token: token, urlString: "\(self.api_url)/user/\(userID)", completion: { (result: Result<User, Error>, statusCode) in
             
@@ -312,7 +312,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----GetUserByID_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -322,7 +322,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func getAllUsers(token: AccessToken, completion: @escaping (Result<[User], ErrorHandler.APICallError>) -> Void){
+    func getAllUsers(token: AccessToken, completion: @escaping (Result<[User], ErrorHandler.ErrorType>) -> Void){
         
         get(token: token, urlString: "\(self.api_url)/user", completion: { (result: Result<[User], Error>, statusCode) in
             
@@ -333,7 +333,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----GetAllUsers_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -343,7 +343,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func getAllOrganizations(token: AccessToken, completion: @escaping (Result<[Organization], ErrorHandler.APICallError>) -> Void){
+    func getAllOrganizations(token: AccessToken, completion: @escaping (Result<[Organization], ErrorHandler.ErrorType>) -> Void){
         
         get(token: token, urlString: "\(self.api_url)/organization", completion: { (result: Result<[Organization], Error>, statusCode) in
             
@@ -354,7 +354,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----GetAllOrganizations_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -366,7 +366,7 @@ class VRef_API: ObservableObject{
     
     // MARK: PUT
     /* ------------------------ PUT ----------------------------*/
-    func updateEvent(token: AccessToken, trainingID: Int, eventID: Int, eventDetails: Event, completion: @escaping (Result<Event, ErrorHandler.APICallError>) -> Void){
+    func updateEvent(token: AccessToken, trainingID: Int, eventID: Int, eventDetails: Event, completion: @escaping (Result<Event, ErrorHandler.ErrorType>) -> Void){
         
         put(token: token,urlString: "\(api_url)/training/\(trainingID)/event/\(eventID)", body: eventDetails, completion: { (result: Result<Event, Error>, statusCode) in
             
@@ -379,7 +379,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----updateEvent_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -389,7 +389,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func updateUser(token: AccessToken, userID: Int, userDetails: User, completion: @escaping (Result<User, ErrorHandler.APICallError>) -> Void){
+    func updateUser(token: AccessToken, userID: Int, userDetails: User, completion: @escaping (Result<User, ErrorHandler.ErrorType>) -> Void){
         
         put(token: token,urlString: "\(api_url)/user/\(userID)", body: userDetails, completion: { (result: Result<User, Error>, statusCode) in
             
@@ -402,7 +402,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----updateUser_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -412,7 +412,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func updateOrganization(token: AccessToken, organizationID: Int, organizationName: OrganizationNameRequestBody, completion: @escaping (Result<EmptyResponse, ErrorHandler.APICallError>) -> Void){
+    func updateOrganization(token: AccessToken, organizationID: Int, organizationName: OrganizationNameRequestBody, completion: @escaping (Result<EmptyResponse, ErrorHandler.ErrorType>) -> Void){
         
         put(token: token,urlString: "\(api_url)/organization/\(organizationID)", body: organizationName, completion: { (result: Result<EmptyResponse, Error>, statusCode) in
             
@@ -425,7 +425,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----updateOrganization_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -435,7 +435,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func activateUser(body: ActivationRequestBody, completion: @escaping (Result<EmptyResponse, ErrorHandler.APICallError>) -> Void){
+    func activateUser(body: ActivationRequestBody, completion: @escaping (Result<EmptyResponse, ErrorHandler.ErrorType>) -> Void){
         
         put(token: nil,urlString: "\(api_url)/user/activate", body: body, completion: { (result: Result<EmptyResponse, Error>, statusCode) in
             
@@ -448,7 +448,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----activateUser_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -461,7 +461,7 @@ class VRef_API: ObservableObject{
     // MARK: DELETE
     /* ------------------------ DELETE ----------------------------*/
     
-    func deleteEvent(token: AccessToken, trainingID: Int, eventID: Int,completion: @escaping (Result<EmptyResponse, ErrorHandler.APICallError>) -> Void){
+    func deleteEvent(token: AccessToken, trainingID: Int, eventID: Int,completion: @escaping (Result<EmptyResponse, ErrorHandler.ErrorType>) -> Void){
         delete(token: token, urlString: "\(api_url)/training/\(trainingID)/event/\(eventID)", completion: { (result: Result<EmptyResponse, Error>, statusCode) in
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -473,7 +473,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----DeleteEvent_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -482,7 +482,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func deleteOrganization(token: AccessToken, organizationID: Int,completion: @escaping (Result<EmptyResponse, ErrorHandler.APICallError>) -> Void){
+    func deleteOrganization(token: AccessToken, organizationID: Int,completion: @escaping (Result<EmptyResponse, ErrorHandler.ErrorType>) -> Void){
         delete(token: token, urlString: "\(api_url)/organization/\(organizationID)", completion: { (result: Result<EmptyResponse, Error>, statusCode) in
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -494,7 +494,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----DeleteOrganization_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
@@ -503,7 +503,7 @@ class VRef_API: ObservableObject{
         })
     }
     
-    func deleteUser(token: AccessToken, userID: Int,completion: @escaping (Result<EmptyResponse, ErrorHandler.APICallError>) -> Void){
+    func deleteUser(token: AccessToken, userID: Int,completion: @escaping (Result<EmptyResponse, ErrorHandler.ErrorType>) -> Void){
         delete(token: token, urlString: "\(api_url)/user/\(userID)", completion: { (result: Result<EmptyResponse, Error>, statusCode) in
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -515,7 +515,7 @@ class VRef_API: ObservableObject{
                 case .failure(let error):
                     print ("-----DeleteUser_ERROR>: \(error)")
                     if let statusCode = statusCode {
-                        completion(.failure(ErrorHandler.APICallError.handleError(statusCode: statusCode)))
+                        completion(.failure(ErrorHandler.ErrorType.handleError(statusCode: statusCode)))
                     } else {
                         completion(.failure(.unknownError))
                     }
