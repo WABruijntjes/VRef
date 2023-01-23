@@ -29,9 +29,12 @@ struct TrainingScreen: View, KeyboardReadable {
     @State private var player1CurrentStreamIndex = 0
     @State private var player2CurrentStreamIndex = 1
     
-    var videoStreams: [VideoStream] = [
-        VideoStream(id: 0, videoURL: URL(string: "https://vrefstorageproduction.blob.core.windows.net/con/2/training-1/POV-1.mp4")!, videoThumbnail: "Thumbnail_Stream1"),
-        VideoStream(id: 1, videoURL: URL(string: "https://vrefstorageproduction.blob.core.windows.net/con/2/training-1/POV-2.mp4")!, videoThumbnail: "Thumbnail_Stream2")
+    var videoStreams: [VideoStream] = [ //Would be more ideal to get these VideoStream object from API. Hardcoded to simulate same effect
+        VideoStream(id: 0, videoURL: URL(string: "https://ffmpegstoragetest.blob.core.windows.net/con/Melle/cockpit_right.mp4")!, videoThumbnail: "thumbnail_cockpit_right"),
+        VideoStream(id: 1, videoURL: URL(string: "https://ffmpegstoragetest.blob.core.windows.net/con/Melle/navigational_display_and_altiude.mp4")!, videoThumbnail: "thumbnail_navigation_altitude"),
+        VideoStream(id: 2, videoURL: URL(string: "https://ffmpegstoragetest.blob.core.windows.net/con/Melle/cockpit_middle.mp4")!, videoThumbnail: "thumbnail_cockpit_middle"),
+        VideoStream(id: 3, videoURL: URL(string: "https://ffmpegstoragetest.blob.core.windows.net/con/Melle/pilots_discussing.mp4")!, videoThumbnail: "thumbnail_pilots_discussing"),
+        VideoStream(id: 4, videoURL: URL(string: "https://ffmpegstoragetest.blob.core.windows.net/con/Melle/fly_map.mp4")!, videoThumbnail: "thumbnail_fly_map")
     ]
     
     var body: some View {
