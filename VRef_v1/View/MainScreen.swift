@@ -32,20 +32,6 @@ struct MainScreen: View {
                         .environmentObject(trainingSessionVM)
                         .environmentObject(adminPanelVM)
                 }
-                
-//                AdminPanel()
-//                    .environmentObject(userSettings)
-//                    .environmentObject(adminPanelVM)
-                
-//                NewTrainingScreen()
-//                    .environmentObject(userSettings)
-//                    .environmentObject(trainingOverviewVM)
-//                    .environmentObject(trainingSessionVM)
-                
-//                TrainingScreen()
-//                    .environmentObject(userSettings)
-//                    .environmentObject(trainingOverviewVM)
-//                    .environmentObject(trainingSessionVM)
             }
         }
     }

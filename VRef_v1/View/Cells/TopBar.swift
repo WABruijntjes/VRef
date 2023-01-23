@@ -77,7 +77,7 @@ struct TopBar: View {
             Button(action: {
                 showLogOutConfirmation = true
             }) {
-                Image(systemName: "rectangle.portrait.and.arrow.forward")
+                Image(systemName: "power")
                     .imageScale(.large)
                     .font(.system(size: 30))
             }.confirmationDialog("", isPresented: $showLogOutConfirmation) {

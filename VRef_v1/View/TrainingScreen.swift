@@ -141,7 +141,7 @@ struct TrainingScreen: View, KeyboardReadable {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(.white)
                 }
-                .offset(y: 90) //Can also be -55 or 0 sometimes. What this jump in offset is based on is unclear
+                .offset(y: 90)
             }
         }
         .sheet(isPresented: $trainingSessionVM.showingExitTrainingForm) {
