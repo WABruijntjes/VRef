@@ -38,17 +38,6 @@ struct Login: View {
                         RoundedRectangle(cornerRadius: 4, style: .continuous)
                             .stroke(Color(.sRGB, red: 153/255, green: 15/255, blue: 238/255), lineWidth: 3)
                     ).padding(.all, 5)
-                    .onAppear() {
-                        self.loginVM.credentials.email = "foron58546@tohup.com" //TODO: REMOVE THIS
-                    }
-                
-                /*
-                 Presentation accounts:
-                    SUPERADMIN:(superadmin@gmail.com | string)
-                    ADMIN:(noyeyes248@unicsite.com | string)
-                    INSTRUCTOR: (foron58546@tohup.com | string),
-                    STUDENT: (vihelo8229@tohup.com | string),
-                */
                 
                 
                 SecureField("Password", text: $loginVM.credentials.password)
@@ -69,9 +58,6 @@ struct Login: View {
                         RoundedRectangle(cornerRadius: 4, style: .continuous)
                             .stroke(Color(.sRGB, red: 153/255, green: 15/255, blue: 238/255), lineWidth: 3)
                     ).padding(.all, 5)
-                    .onAppear() {
-                        self.loginVM.credentials.password = "string" //TODO: REMOVE THIS
-                    }
                 
                 Spacer()
                     .frame(height: 25)

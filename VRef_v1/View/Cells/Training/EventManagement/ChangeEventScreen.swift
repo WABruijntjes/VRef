@@ -28,7 +28,7 @@ struct ChangeEventScreen: View {
                         .imageScale(.large)
                         .font(.largeTitle)
                         .onTapGesture {
-                            trainingSessionVM.showingChangeEventForm = false
+                            self.hideForm()
                         }
                 }
                 .padding(.horizontal)
@@ -53,10 +53,8 @@ struct ChangeEventScreen: View {
                             .padding(.bottom)
                             .foregroundColor(Color(.sRGB, red: 132/255, green: 132/255, blue: 132/255))
                         TextField("Type a name for your feedback event here...", text: $event.name)
-                            .onChange(of: event.name) { newValue in
-                                if newValue.count > self.textCharacterLimit {
-                                    event.name = String(newValue.prefix(self.textCharacterLimit))
-                                }
+                            .onChange(of: event.name) { nameValue in
+                                limitCharacters(value: nameValue)
                             }
                             .padding(.horizontal)
                             .autocapitalization(.sentences)
@@ -76,10 +74,8 @@ struct ChangeEventScreen: View {
                         .foregroundColor(Color(.sRGB, red: 132/255, green: 132/255, blue: 132/255))
                     Spacer()
                     TextField("", text: $event.message, axis: .vertical)
-                        .onChange(of: event.message) { newValue in
-                            if newValue.count > self.textCharacterLimit {
-                                event.message = String(newValue.prefix(self.textCharacterLimit))
-                            }
+                        .onChange(of: event.message) { messageValue in
+                            limitCharacters(value: messageValue)
                         }
                         .frame(maxHeight: .infinity, alignment: .top)
                         .lineLimit(11...11)
@@ -107,6 +103,16 @@ struct ChangeEventScreen: View {
                 .padding(.all, 10)
                 Spacer()
             }
+        }
+    }
+    
+    func hideForm(){
+        trainingSessionVM.showingChangeEventForm = false
+    }
+    
+    func limitCharacters(value: String){
+        if value.count > self.textCharacterLimit {
+            event.name = String(value.prefix(self.textCharacterLimit))
         }
     }
 }
