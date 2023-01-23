@@ -13,6 +13,8 @@ struct Training_EventList: View {
     
     @Binding var eventToChange: Event?
     
+    @State var messageCharacterLimit: Int = 1000
+    
     var body: some View {
         VStack(alignment: .leading){
             HStack{
@@ -33,6 +35,11 @@ struct Training_EventList: View {
                             .padding(.horizontal)
                     }
                     TextField("", text: $trainingSessionVM.newEventMessage)
+                        .onChange(of: trainingSessionVM.newEventMessage) { messageValue in
+                            if messageValue.count > self.messageCharacterLimit {
+                                trainingSessionVM.newEventMessage = String(messageValue.prefix(self.messageCharacterLimit))
+                            }
+                        }
                         .keyboardType(.default)
                         .disableAutocorrection(true)
                         .foregroundColor(.black)

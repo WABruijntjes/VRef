@@ -11,6 +11,9 @@ struct ActivateAccountScreen: View {
     
     @EnvironmentObject var loginVM: LoginViewModel
     
+    @State var codeCharacterLimit: Int = 8
+    @State var passwordCharacterLimit: Int = 50
+    
     var body: some View {
         VStack(spacing: 25){
             HStack {
@@ -33,6 +36,11 @@ struct ActivateAccountScreen: View {
                 .padding(.horizontal, 50)
             ZStack{
                 TextField("",text: $loginVM.activationCode)
+                    .onChange(of: loginVM.activationCode) { codeValue in
+                        if codeValue.count > self.codeCharacterLimit {
+                            loginVM.activationCode = String(codeValue.prefix(self.codeCharacterLimit))
+                        }
+                    }
                     .textContentType(.oneTimeCode)
                     .keyboardType(.default)
                     .autocapitalization(.words)
@@ -57,6 +65,11 @@ struct ActivateAccountScreen: View {
                 .padding(.horizontal, 50)
             ZStack{
                 SecureField("",text: $loginVM.newPassword)
+                    .onChange(of: loginVM.newPassword) { passwordValue in
+                        if passwordValue.count > self.passwordCharacterLimit {
+                            loginVM.newPassword = String(passwordValue.prefix(self.passwordCharacterLimit))
+                        }
+                    }
                     .textContentType(.newPassword)
                     .keyboardType(.default)
                     .autocapitalization(.words)
@@ -81,6 +94,11 @@ struct ActivateAccountScreen: View {
                 .padding(.horizontal, 50)
             ZStack{
                 SecureField("",text: $loginVM.confirmPassword)
+                    .onChange(of: loginVM.newPassword) { passwordValue in
+                        if passwordValue.count > self.passwordCharacterLimit {
+                            loginVM.newPassword = String(passwordValue.prefix(self.passwordCharacterLimit))
+                        }
+                    }
                     .textContentType(.newPassword)
                     .keyboardType(.default)
                     .autocapitalization(.words)

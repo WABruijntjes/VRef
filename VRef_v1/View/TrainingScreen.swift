@@ -37,6 +37,8 @@ struct TrainingScreen: View, KeyboardReadable {
         VideoStream(id: 4, videoURL: URL(string: "https://ffmpegstoragetest.blob.core.windows.net/con/Melle/fly_map.mp4")!, videoThumbnail: "thumbnail_fly_map")
     ]
     
+    @State var messageCharacterLimit: Int = 1000
+    
     var body: some View {
         ZStack{
             VStack(spacing: 5) {
@@ -133,6 +135,11 @@ struct TrainingScreen: View, KeyboardReadable {
                             .padding(.horizontal)
                     }
                     TextField("", text: $trainingSessionVM.newEventMessage)
+                        .onChange(of: trainingSessionVM.newEventMessage) { messageValue in
+                            if messageValue.count > self.messageCharacterLimit {
+                                trainingSessionVM.newEventMessage = String(messageValue.prefix(self.messageCharacterLimit))
+                            }
+                        }
                         .foregroundColor(.black)
                         .autocapitalization(.sentences)
                         .disableAutocorrection(true)

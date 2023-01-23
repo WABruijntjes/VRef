@@ -11,6 +11,8 @@ struct NewOrganizationScreen: View {
     
     @EnvironmentObject var adminPanelVM: AdminPanelViewModel
     
+    @State var nameCharacterLimit: Int = 50
+    
     var body: some View {
         VStack{
             HStack {
@@ -34,6 +36,11 @@ struct NewOrganizationScreen: View {
             
             ZStack{
                 TextField(String("Ex. Pilot Inc."),text: $adminPanelVM.newOrganizationName)
+                    .onChange(of: adminPanelVM.newOrganizationName) { nameValue in
+                        if nameValue.count > self.nameCharacterLimit {
+                            adminPanelVM.newOrganizationName = String(nameValue.prefix(self.nameCharacterLimit))
+                        }
+                    }
                     .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
                     .autocapitalization(.words)

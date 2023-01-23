@@ -11,6 +11,9 @@ struct NewUserScreen: View {
     
     @EnvironmentObject var adminPanelVM: AdminPanelViewModel
     
+    @State var nameCharacterLimit: Int = 50
+    @State var emailCharacterLimit: Int = 100
+    
     var body: some View {
         VStack{
             HStack {
@@ -37,6 +40,11 @@ struct NewUserScreen: View {
             HStack{
                 ZStack{
                     TextField("Ex. Peter",text: $adminPanelVM.newUserFirstName)
+                        .onChange(of: adminPanelVM.newUserFirstName) { nameValue in
+                            if nameValue.count > self.nameCharacterLimit {
+                                adminPanelVM.newUserFirstName = String(nameValue.prefix(self.nameCharacterLimit))
+                            }
+                        }
                         .textContentType(.name)
                         .keyboardType(.default)
                         .autocapitalization(.words)
@@ -56,6 +64,11 @@ struct NewUserScreen: View {
                 
                 ZStack{
                     TextField("Ex. Parker",text: $adminPanelVM.newUserLastName)
+                        .onChange(of: adminPanelVM.newUserLastName) { nameValue in
+                            if nameValue.count > self.nameCharacterLimit {
+                                adminPanelVM.newUserLastName = String(nameValue.prefix(self.nameCharacterLimit))
+                            }
+                        }
                         .textContentType(.familyName)
                         .keyboardType(.default)
                         .autocapitalization(.words)
@@ -84,6 +97,11 @@ struct NewUserScreen: View {
             HStack{
                 ZStack{
                     TextField(String("Ex. PeterParker@Email.com"),text: $adminPanelVM.newUserEmail)
+                        .onChange(of: adminPanelVM.newUserEmail) { emailValue in
+                            if emailValue.count > self.emailCharacterLimit {
+                                adminPanelVM.newUserEmail = String(emailValue.prefix(self.emailCharacterLimit))
+                            }
+                        }
                         .textContentType(.emailAddress)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.words)

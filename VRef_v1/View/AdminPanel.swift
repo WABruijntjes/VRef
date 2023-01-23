@@ -12,6 +12,8 @@ struct AdminPanel: View {
     @EnvironmentObject var userSettings: UserSettings
     @EnvironmentObject var adminPanelVM: AdminPanelViewModel
     
+    @State var nameCharacterLimit: Int = 50
+    
     var body: some View {
         ZStack{
             HStack{
@@ -45,6 +47,11 @@ struct AdminPanel: View {
                     HStack {
                         if(adminPanelVM.showingChangeOrganizationBox){
                             TextField("Ex. Pilot Inc.",text: $adminPanelVM.organizationNameToChange)
+                                .onChange(of: adminPanelVM.organizationNameToChange) { nameValue in
+                                    if nameValue.count > self.nameCharacterLimit {
+                                        adminPanelVM.organizationNameToChange = String(nameValue.prefix(self.nameCharacterLimit))
+                                    }
+                                }
                                 .textContentType(.organizationName)
                                 .keyboardType(.default)
                                 .autocapitalization(.words)

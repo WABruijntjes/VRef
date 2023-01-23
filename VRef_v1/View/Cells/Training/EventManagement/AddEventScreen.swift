@@ -11,7 +11,8 @@ struct AddEventScreen: View {
     
     @EnvironmentObject var trainingSessionVM: TrainingSessionViewModel
     
-    @State var textCharacterLimit: Int = 1000
+    @State var nameCharacterLimit: Int = 100
+    @State var messageCharacterLimit: Int = 1000
     
     var body: some View {
         VStack(spacing: 0) {
@@ -51,9 +52,9 @@ struct AddEventScreen: View {
                             .padding(.bottom)
                             .foregroundColor(Color(.sRGB, red: 132/255, green: 132/255, blue: 132/255))
                         TextField("Type a name for your feedback event here...", text: $trainingSessionVM.newEventName)
-                            .onChange(of: trainingSessionVM.newEventName) { newValue in
-                                if newValue.count > self.textCharacterLimit {
-                                    self.trainingSessionVM.newEventName = String(newValue.prefix(self.textCharacterLimit))
+                            .onChange(of: trainingSessionVM.newEventName) { nameValue in
+                                if nameValue.count > self.nameCharacterLimit {
+                                    trainingSessionVM.newEventName = String(nameValue.prefix(self.nameCharacterLimit))
                                 }
                             }
                             .padding(.horizontal)
@@ -74,9 +75,9 @@ struct AddEventScreen: View {
                         .foregroundColor(Color(.sRGB, red: 132/255, green: 132/255, blue: 132/255))
                     Spacer()
                     TextField("", text: $trainingSessionVM.newEventMessage, axis: .vertical)
-                        .onChange(of: trainingSessionVM.newEventMessage) { newValue in
-                            if newValue.count > self.textCharacterLimit {
-                                self.trainingSessionVM.newEventMessage = String(newValue.prefix(self.textCharacterLimit))
+                        .onChange(of: trainingSessionVM.newEventMessage) { messageValue in
+                            if messageValue.count > self.messageCharacterLimit {
+                                trainingSessionVM.newEventMessage = String(messageValue.prefix(self.messageCharacterLimit))
                             }
                         }
                         .frame(maxHeight: .infinity, alignment: .top)
@@ -91,7 +92,7 @@ struct AddEventScreen: View {
                         )
                     HStack{
                         Spacer()
-                        Text("Characters left: \(textCharacterLimit - trainingSessionVM.newEventMessage.count)")
+                        Text("Characters left: \(messageCharacterLimit - trainingSessionVM.newEventMessage.count)")
                     }
                 }.padding(.horizontal)
                     .frame(maxHeight: .infinity)

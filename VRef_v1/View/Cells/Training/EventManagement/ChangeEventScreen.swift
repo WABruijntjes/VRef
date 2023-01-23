@@ -13,7 +13,9 @@ struct ChangeEventScreen: View {
     @EnvironmentObject var trainingSessionVM: TrainingSessionViewModel
     
     @State var event: Event
-    @State var textCharacterLimit: Int = 1000
+    
+    @State var nameCharacterLimit: Int = 100
+    @State var messageCharacterLimit: Int = 1000
     
     var body: some View {
         VStack(spacing: 0) {
@@ -28,7 +30,7 @@ struct ChangeEventScreen: View {
                         .imageScale(.large)
                         .font(.largeTitle)
                         .onTapGesture {
-                            self.hideForm()
+                            trainingSessionVM.showingChangeEventForm = false
                         }
                 }
                 .padding(.horizontal)
@@ -54,7 +56,9 @@ struct ChangeEventScreen: View {
                             .foregroundColor(Color(.sRGB, red: 132/255, green: 132/255, blue: 132/255))
                         TextField("Type a name for your feedback event here...", text: $event.name)
                             .onChange(of: event.name) { nameValue in
-                                limitCharacters(value: nameValue)
+                                if nameValue.count > self.nameCharacterLimit {
+                                    event.name = String(nameValue.prefix(self.nameCharacterLimit))
+                                }
                             }
                             .padding(.horizontal)
                             .autocapitalization(.sentences)
@@ -75,7 +79,9 @@ struct ChangeEventScreen: View {
                     Spacer()
                     TextField("", text: $event.message, axis: .vertical)
                         .onChange(of: event.message) { messageValue in
-                            limitCharacters(value: messageValue)
+                            if messageValue.count > self.messageCharacterLimit {
+                                event.message = String(messageValue.prefix(self.messageCharacterLimit))
+                            }
                         }
                         .frame(maxHeight: .infinity, alignment: .top)
                         .lineLimit(11...11)
@@ -89,7 +95,7 @@ struct ChangeEventScreen: View {
                         )
                     HStack{
                         Spacer()
-                        Text("Characters left: \(textCharacterLimit - event.message.count)")
+                        Text("Characters left: \(messageCharacterLimit - event.message.count)")
                     }
                     .padding(.horizontal)
                 }.padding(.horizontal)
@@ -103,16 +109,6 @@ struct ChangeEventScreen: View {
                 .padding(.all, 10)
                 Spacer()
             }
-        }
-    }
-    
-    func hideForm(){
-        trainingSessionVM.showingChangeEventForm = false
-    }
-    
-    func limitCharacters(value: String){
-        if value.count > self.textCharacterLimit {
-            event.name = String(value.prefix(self.textCharacterLimit))
         }
     }
 }
