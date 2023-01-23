@@ -52,6 +52,7 @@ class LoginViewModel: ObservableObject{
                 
                 DispatchQueue.main.async {
                     self.isAuthenticated = true
+                    self.credentials = Credentials(email: "", password: "")
                 }
                 
             case .failure(let authError):
