@@ -14,6 +14,8 @@ struct ActivateAccountScreen: View {
     @State var codeCharacterLimit: Int = 8
     @State var passwordCharacterLimit: Int = 50
     
+    @State private var errorMessage = ""
+    
     var body: some View {
         VStack(spacing: 25){
             HStack {
@@ -69,6 +71,12 @@ struct ActivateAccountScreen: View {
                         if passwordValue.count > self.passwordCharacterLimit {
                             loginVM.newPassword = String(passwordValue.prefix(self.passwordCharacterLimit))
                         }
+                        
+                        if loginVM.isValidPassword(passwordValue) {
+                            errorMessage = ""
+                        } else {
+                            errorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one special character, one number and have a minimum length of 8 characters"
+                        }
                     }
                     .textContentType(.newPassword)
                     .keyboardType(.default)
@@ -116,7 +124,10 @@ struct ActivateAccountScreen: View {
                     .frame(height: 60)
             )
             .padding(.horizontal, 50)
-            
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+            }
             Spacer()
             HStack{
                 Cancel_Button()

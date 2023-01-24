@@ -24,6 +24,7 @@ struct ErrorHandler {
         case notAuthenticated // 403
         case trainingStateError // 405
         case nameAlreadyExists // 409
+        case invalidLogin // 503
         
         var id: String {
             self.localizedDescription
@@ -45,6 +46,8 @@ struct ErrorHandler {
                 return NSLocalizedString("Can't use this method in the current state of the Training", comment: "")
             case .nameAlreadyExists:
                 return NSLocalizedString("The name you're attempting to assign already exists within the database", comment: "")
+            case .invalidLogin:
+                return NSLocalizedString("Incorrect username or password. Try again", comment: "")
             }
         }
         
@@ -62,6 +65,8 @@ struct ErrorHandler {
                 return .trainingStateError
             case 409:
                 return .nameAlreadyExists
+            case 503:
+                return .invalidLogin
             default:
                 return .unknownError
             }

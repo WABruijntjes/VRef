@@ -29,7 +29,12 @@ class LoginViewModel: ObservableObject{
     }
     
     var activateDisabled: Bool {
-        newPassword != confirmPassword || (activationCode.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty)
+        newPassword != confirmPassword || (activationCode.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) || !isValidPassword(newPassword)
+    }
+    
+    func isValidPassword(_ password: String) -> Bool {
+        let passwordTest = NSPredicate(format: "SELF MATCHES %@", "(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z])(?=.*[@#$%^&+=!*]).{8,}")
+        return passwordTest.evaluate(with: password)
     }
     
     func login(){
